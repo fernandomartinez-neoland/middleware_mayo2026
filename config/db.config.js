@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import 'dotenv/config'
 
 mongoose
-  .connect("mongodb+srv://fernandomartinez_db_user:123@cluster0.w6ghmta.mongodb.net/mayo2026")
+  .connect(process.env.DB_URI)
   .then(() => console.log("Connected!"))
   .catch(console.error);
 
