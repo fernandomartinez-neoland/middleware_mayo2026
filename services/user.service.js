@@ -5,31 +5,30 @@ export function userService() {
 }
 
 export async function userRegisterService(nombre, password, email) {
+  try {
+    const emailExist = await model().findOne({ email });
+    if (emailExist) {
+      return {
+        status: 409,
+        message: "correo duplicado",
+      };
+    }
 
-  try{
-  const emailExist = await model().findOne({ email });
-  if (emailExist) {
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync(password, salt);
+
+    await model().insertOne({ nombre, password: hash, email });
+
     return {
-      status: 409,
-      message: "correo duplicado",
+      status: 201,
+      message: "usuario creado",
     };
-  }
-
-  const saltRounds = 10;
-  const salt = bcrypt.genSaltSync(saltRounds);
-  const hash = bcrypt.hashSync(password, salt);
-
-  await model().insertOne({ nombre, password: hash, email });
-
-  return {
-    status: 201,
-    message: "usuario creado",
-  };
-  }catch (e){
+  } catch (e) {
     return {
-    status: 400,
-    message: "error creando usuario",
-  };
+      status: 400,
+      message: "error creando usuario",
+    };
   }
 }
 
