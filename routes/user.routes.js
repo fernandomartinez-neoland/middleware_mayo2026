@@ -1,4 +1,5 @@
 import express from "express";
+import {authMiddleware} from '../middleware/auth.middleware.js'
 import {
   profileController,
   registerController,
@@ -6,7 +7,7 @@ import {
 } from "../controllers/user.controller.js";
 const routes = express.Router();
 
-routes.post("/profile", profileController);
+routes.post("/profile",authMiddleware, profileController);
 routes.post("/login", loginController);
 routes.post("/register", registerController);
 
