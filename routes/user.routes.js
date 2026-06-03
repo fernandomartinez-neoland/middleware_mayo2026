@@ -1,10 +1,9 @@
 import express from 'express'
+import {profileController} from '../controllers/user.controller.js'
 const routes=express.Router();
 
 
-routes.post('/profile', (req,res)=>{
-    res.send("user profile")
-})
+routes.post('/profile', profileController)
 
 
 export default routes;

@@ -1,0 +1,24 @@
+import {userService, userRegisterService, userProfileService} from '../services/user.service.js'
+
+export function userController(req, res){
+    res.status(200).send(userService());
+}
+
+export async function registerController(req, res){
+    try {
+        const { nombre, password, email } = req.body;
+        
+        //  Agregado el await
+        const newUser = await userRegisterService(nombre, password, email); 
+        
+        res.status(201).send(newUser);
+    } catch (error) {
+        // Es buena práctica manejar el error (por ejemplo, si el email ya existe)
+        res.status(400).send({ error: error.message });
+    }
+}
+
+
+export async function profileController(req, res){
+    res.send(await userProfileService())
+}
