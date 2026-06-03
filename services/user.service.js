@@ -5,6 +5,8 @@ export function userService() {
 }
 
 export async function userRegisterService(nombre, password, email) {
+
+  try{
   const emailExist = await model().findOne({ email });
   if (emailExist) {
     return {
@@ -17,9 +19,18 @@ export async function userRegisterService(nombre, password, email) {
   const salt = bcrypt.genSaltSync(saltRounds);
   const hash = bcrypt.hashSync(password, salt);
 
-  return await model().insertOne({ nombre,
-     password: hash, 
-     email });
+  await model().insertOne({ nombre, password: hash, email });
+
+  return {
+    status: 201,
+    message: "usuario creado",
+  };
+  }catch (e){
+    return {
+    status: 400,
+    message: "error creando usuario",
+  };
+  }
 }
 
 export async function userProfileService(email) {
