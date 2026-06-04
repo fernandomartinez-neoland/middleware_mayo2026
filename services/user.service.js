@@ -1,4 +1,4 @@
-import { model } from "../models/users.model.js";
+import { model } from "../models/userModel.supabase.js";
 import bcrypt from "bcrypt";
 import { createToken } from "./token.service.js";
 export function userService() {
@@ -14,7 +14,6 @@ export async function userRegisterService(nombre, password, email) {
         message: "correo duplicado",
       };
     }
-
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
